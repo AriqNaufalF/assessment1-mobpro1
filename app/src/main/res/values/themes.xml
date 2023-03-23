@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Assesment1" parent="Theme.Material3.Light">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSecondary">@color/material_dynamic_neutral_variant90</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSurface">?attr/colorPrimary</item>
+        <item name="colorOnSurface">?attr/colorOnPrimary</item>
+        <item name="materialCardViewElevatedStyle">@style/Widget.App.CardView.Light</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+    </style>
+</resources>

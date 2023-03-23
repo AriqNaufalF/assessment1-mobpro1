@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="counterText" parent="TextAppearance.AppCompat">
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+    <style name="Widget.App.CardView.Dark" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/material_dynamic_neutral20</item>
+    </style>
+    <style name="Widget.App.CardView.Light" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/material_dynamic_neutral95</item>
+    </style>
+</resources>
