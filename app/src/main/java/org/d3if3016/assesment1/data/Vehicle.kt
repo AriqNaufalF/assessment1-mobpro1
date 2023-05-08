@@ -1,11 +1,12 @@
-package org.d3if3016.assesment1
+package org.d3if3016.assesment1.data
 
 import androidx.annotation.DrawableRes
+import org.d3if3016.assesment1.R
 
 data class Vehicle(
     val name: String,
     @DrawableRes val imgRes: Int,
-    var count: Int = 0
+    val count: Int = 0
 )
 
 fun getVehicles(): List<Vehicle> {

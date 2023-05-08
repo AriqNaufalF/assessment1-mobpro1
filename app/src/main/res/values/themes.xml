@@ -10,6 +10,7 @@
         <item name="colorSurface">?attr/colorPrimary</item>
         <item name="colorOnSurface">?attr/colorOnPrimary</item>
         <item name="materialCardViewElevatedStyle">@style/Widget.App.CardView.Light</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
     </style>
