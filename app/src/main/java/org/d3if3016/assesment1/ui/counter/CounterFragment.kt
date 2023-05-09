@@ -12,13 +12,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ImageButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.launch
 import org.d3if3016.assesment1.R
+import org.d3if3016.assesment1.data.SettingDataStore
+import org.d3if3016.assesment1.data.dataStore
 import org.d3if3016.assesment1.databinding.FragmentCounterBinding
 
 class CounterFragment : Fragment() {
+    private val layoutDataStore: SettingDataStore by lazy {
+        SettingDataStore(requireContext().dataStore)
+    }
     private val viewModel: CounterViewModel by lazy {
         ViewModelProvider(requireActivity())[CounterViewModel::class.java]
     }
@@ -27,6 +37,7 @@ class CounterFragment : Fragment() {
     private lateinit var counterAdapter: CounterAdapter
     private lateinit var chronometer: Chronometer
     private lateinit var imageButton: ImageButton
+    private var isGridLayout = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,11 +45,17 @@ class CounterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCounterBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
+        layoutDataStore.preferenceFlow.asLiveData().observe(viewLifecycleOwner) {
+            isGridLayout = it
+            setLayout()
+            activity?.invalidateOptionsMenu()
+        }
+
         chronometer = binding.chronometer
         imageButton = binding.imageButton
         counterAdapter = CounterAdapter(viewModel::updateVehicle)
@@ -71,14 +88,22 @@ class CounterFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.counter_menu, menu)
+
+        val menuItem = menu.findItem(R.id.switch_layout_action)
+        setIconAndTitle(menuItem)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_my_data -> {
                 // TODO: to my data fragment
+                return true
+            }
+            R.id.switch_layout_action -> {
+                lifecycleScope.launch {
+                    layoutDataStore.saveLayout(requireContext(), !isGridLayout)
+                }
                 return true
             }
             R.id.refresh_menu -> {
@@ -115,5 +140,23 @@ class CounterFragment : Fragment() {
             chronometer.start()
             viewModel.setIsRunning(true)
         }
+    }
+
+    private fun setLayout() {
+        binding.recyclerView.layoutManager = if (isGridLayout)
+            GridLayoutManager(context, calculateNoOfColumns(requireContext()))
+        else
+            LinearLayoutManager(context)
+    }
+
+    private fun setIconAndTitle(menuItem: MenuItem) {
+        var iconId = R.drawable.view_list
+        var stringId = R.string.list_layout
+        if (!isGridLayout) {
+            iconId = R.drawable.grid_view
+            stringId = R.string.grid_layout
+        }
+        menuItem.icon = ContextCompat.getDrawable(requireContext(), iconId)
+        menuItem.title = getString(stringId)
     }
 }

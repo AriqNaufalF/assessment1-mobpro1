@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/counterFragment"
         android:name="org.d3if3016.assesment1.ui.counter.CounterFragment"
-        android:label="@string/app_name" />
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_counterFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="org.d3if3016.assesment1.ui.about.AboutFragment"
+        android:label="AboutFragment" />
 </navigation>

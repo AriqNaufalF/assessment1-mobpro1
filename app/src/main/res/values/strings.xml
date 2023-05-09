@@ -6,4 +6,7 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="save">Save</string>
+    <string name="list_layout">List Layout</string>
+    <string name="grid_layout">Grid Layout</string>
+    <string name="about">About</string>
 </resources>
