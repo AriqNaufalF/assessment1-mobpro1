@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
@@ -98,6 +99,10 @@ class CounterFragment : Fragment() {
         when (item.itemId) {
             R.id.menu_my_data -> {
                 // TODO: to my data fragment
+                return true
+            }
+            R.id.menu_about -> {
+                findNavController().navigate(R.id.action_counterFragment_to_aboutFragment)
                 return true
             }
             R.id.switch_layout_action -> {
