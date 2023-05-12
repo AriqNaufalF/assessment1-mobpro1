@@ -13,8 +13,10 @@
         Vehicle Counter is an application that allows you to count the number of vehicles passing by a certain point on a road.
         You can use it to monitor traffic flow, analyze traffic patterns, or conduct surveys.
         You can choose from different types of vehicles, such as cars, trucks, buses, motorcycles, and bicycles.
-        You can also share the data to email for further analysis.
-        Vehicle Counter is a useful and easy-to-use tool for anyone interested in traffic management or research.
+        You can also save and share the data to email for further analysis.
+        To delete saved data you can click trash can icon at the top right corner of the my data screen or you can delete the data one by one
+        by swiping it to the left.
+        \nVehicle Counter is a useful and easy-to-use tool for anyone interested in traffic management or research.
     </string>
     <string name="vehicles_data">Bike: %1$d\nMotorcycle: %2$d\nCar: %3$d\nMini truck: %4$d\nBus: %5$d\nTruck: %6$d</string>
     <string name="vehicles_share_data">Date: %1$s\nBike: %2$d\nMotorcycle: %3$d\nCar: %4$d\nMini truck: %5$d\nBus: %6$d\nTruck: %7$d\nTime: %8$s</string>
