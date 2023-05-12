@@ -2,11 +2,30 @@
     <string name="app_name">Vehicle Counter</string>
     <string name="refresh">Refresh</string>
     <string name="my_data">My Data</string>
-    <string name="timer">00:00:00</string>
+    <string name="time">%1$d:%2$d:%3$d</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="save">Save</string>
     <string name="list_layout">List Layout</string>
     <string name="grid_layout">Grid Layout</string>
     <string name="about">About</string>
+    <string name="about_desc">
+        Vehicle Counter is an application that allows you to count the number of vehicles passing by a certain point on a road.
+        You can use it to monitor traffic flow, analyze traffic patterns, or conduct surveys.
+        You can choose from different types of vehicles, such as cars, trucks, buses, motorcycles, and bicycles.
+        You can also share the data to email for further analysis.
+        Vehicle Counter is a useful and easy-to-use tool for anyone interested in traffic management or research.
+    </string>
+    <string name="vehicles_data">Bike: %1$d\nMotorcycle: %2$d\nCar: %3$d\nMini truck: %4$d\nBus: %5$d\nTruck: %6$d</string>
+    <string name="vehicles_share_data">Date: %1$s\nBike: %2$d\nMotorcycle: %3$d\nCar: %4$d\nMini truck: %5$d\nBus: %6$d\nTruck: %7$d\nTime: %8$s</string>
+    <string name="share_data">Share data</string>
+    <string name="empty">No data available</string>
+    <string name="stopwatch_invalid">Please start the stopwatch first</string>
+    <string name="delete_all">Delete all data</string>
+    <string name="delete_all_confirmation">This process will delete your data! Are you sure want to continue?</string>
+    <string name="delete_item_message">Data deleted</string>
+    <string name="refresh_confirmation">Are you sure want to reset current data?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No, cancel</string>
+    <string name="undo">Undo</string>
 </resources>

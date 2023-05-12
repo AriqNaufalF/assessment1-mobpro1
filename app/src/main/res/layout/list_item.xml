@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -20,7 +20,8 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="8dp"
             android:alpha="0.8"
-            android:src="@drawable/bike"/>
+            android:src="@drawable/bike"
+            android:contentDescription="@null" />
         <TextView
             android:id="@+id/vehicleName"
             android:layout_width="wrap_content"
@@ -30,7 +31,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="Bike"/>
+            tools:text="Bike"/>
 
         <TextView
             android:id="@+id/vehicleCounter"
@@ -40,9 +41,9 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:paddingVertical="3.5dp"
-            android:text="0"
+            tools:text="0"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>

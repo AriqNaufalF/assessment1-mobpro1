@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="@string/timer"
-        android:textColor="@color/black"
+        tools:text="00:00"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:text="@string/save"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

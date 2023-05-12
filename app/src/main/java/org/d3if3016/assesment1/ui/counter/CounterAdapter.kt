@@ -11,17 +11,17 @@ import org.d3if3016.assesment1.databinding.ListItemBinding
 class CounterAdapter(private val onClick: (Vehicle) -> Unit) : ListAdapter<Vehicle, CounterAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-    private val DIFF_CALLBACK =
-        object : DiffUtil.ItemCallback<Vehicle>() {
-            override fun areItemsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
-                return oldItem.name == newItem.name
-            }
+        private val DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<Vehicle>() {
+                override fun areItemsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
+                    return oldItem.name == newItem.name
+                }
 
-            override fun areContentsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: Vehicle, newItem: Vehicle): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
-}
+    }
 
     inner class ViewHolder(
         private val binding: ListItemBinding

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,9 +21,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.d3if3016.assesment1.R
 import org.d3if3016.assesment1.data.SettingDataStore
+import org.d3if3016.assesment1.data.VehiclesDb
 import org.d3if3016.assesment1.data.dataStore
 import org.d3if3016.assesment1.databinding.FragmentCounterBinding
 
@@ -31,7 +34,9 @@ class CounterFragment : Fragment() {
         SettingDataStore(requireContext().dataStore)
     }
     private val viewModel: CounterViewModel by lazy {
-        ViewModelProvider(requireActivity())[CounterViewModel::class.java]
+        val db = VehiclesDb.getInstance(requireContext())
+        val factory = CounterViewModelFactory(db.dao)
+        ViewModelProvider(this, factory)[CounterViewModel::class.java]
     }
 
     private lateinit var binding: FragmentCounterBinding
@@ -47,6 +52,11 @@ class CounterFragment : Fragment() {
     ): View {
         binding = FragmentCounterBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
+        counterAdapter = CounterAdapter(viewModel::updateVehicle)
+        with(binding.recyclerView) {
+            adapter = counterAdapter
+            setHasFixedSize(true)
+        }
         return binding.root
     }
 
@@ -59,14 +69,7 @@ class CounterFragment : Fragment() {
 
         chronometer = binding.chronometer
         imageButton = binding.imageButton
-        counterAdapter = CounterAdapter(viewModel::updateVehicle)
-        //        Set recycler view
-        binding.recyclerView.layoutManager =
-            GridLayoutManager(requireContext(), calculateNoOfColumns(requireContext()))
-        with(binding.recyclerView) {
-            adapter = counterAdapter
-            setHasFixedSize(true)
-        }
+
         viewModel.getVehiclesData().observe(viewLifecycleOwner) {
             counterAdapter.submitList(it)
         }
@@ -86,6 +89,14 @@ class CounterFragment : Fragment() {
         imageButton.setOnClickListener {
             startStopTimer()
         }
+        binding.saveButton.setOnClickListener {
+            val result = viewModel.saveData(chronometer.text.toString())
+            if (result == null) {
+                resetAllState()
+                return@setOnClickListener
+            }
+            Toast.makeText(context, result, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -98,24 +109,31 @@ class CounterFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_my_data -> {
-                // TODO: to my data fragment
+                findNavController().navigate(R.id.action_counterFragment_to_myDataFragment)
                 return true
             }
+
             R.id.menu_about -> {
                 findNavController().navigate(R.id.action_counterFragment_to_aboutFragment)
                 return true
             }
+
             R.id.switch_layout_action -> {
                 lifecycleScope.launch {
                     layoutDataStore.saveLayout(requireContext(), !isGridLayout)
                 }
                 return true
             }
+
             R.id.refresh_menu -> {
-                viewModel.resetData()
-                chronometer.base = SystemClock.elapsedRealtime()
-                chronometer.stop()
-                imageButton.setImageResource(R.drawable.play_arrow)
+                MaterialAlertDialogBuilder(requireContext())
+                    .setMessage(R.string.refresh_confirmation)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        resetAllState()
+                    }
+                    .setNegativeButton(R.string.no) { dialog, _ ->
+                        dialog.cancel()
+                    }.show()
                 return true
             }
         }
@@ -163,5 +181,12 @@ class CounterFragment : Fragment() {
         }
         menuItem.icon = ContextCompat.getDrawable(requireContext(), iconId)
         menuItem.title = getString(stringId)
+    }
+
+    private fun resetAllState() {
+        viewModel.resetData()
+        chronometer.base = SystemClock.elapsedRealtime()
+        chronometer.stop()
+        imageButton.setImageResource(R.drawable.play_arrow)
     }
 }

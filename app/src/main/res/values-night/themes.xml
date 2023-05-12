@@ -6,11 +6,21 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnBackground">@color/purple_900</item>
         <item name="colorSecondary">@color/purple_400</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/material_dynamic_neutral_variant90</item>
         <item name="colorSurface">?attr/colorPrimary</item>
         <item name="colorOnSurface">?attr/colorOnPrimary</item>
         <item name="materialCardViewElevatedStyle">@style/Widget.App.CardView.Dark</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <!-- Dialog modal theme -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+    </style>
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">?attr/colorSecondary</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+    <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 </resources>
