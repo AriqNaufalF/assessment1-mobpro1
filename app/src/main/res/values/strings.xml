@@ -30,4 +30,5 @@
     <string name="yes">Yes</string>
     <string name="no">No, cancel</string>
     <string name="undo">Undo</string>
+    <string name="connection_error">Internet connection error</string>
 </resources>

@@ -28,6 +28,7 @@ import org.d3if3016.assesment1.data.SettingDataStore
 import org.d3if3016.assesment1.data.VehiclesDb
 import org.d3if3016.assesment1.data.dataStore
 import org.d3if3016.assesment1.databinding.FragmentCounterBinding
+import org.d3if3016.assesment1.network.ApiStatus
 
 class CounterFragment : Fragment() {
     private val layoutDataStore: SettingDataStore by lazy {
@@ -55,7 +56,6 @@ class CounterFragment : Fragment() {
         counterAdapter = CounterAdapter(viewModel::updateVehicle)
         with(binding.recyclerView) {
             adapter = counterAdapter
-            setHasFixedSize(true)
         }
         return binding.root
     }
@@ -72,6 +72,10 @@ class CounterFragment : Fragment() {
 
         viewModel.getVehiclesData().observe(viewLifecycleOwner) {
             counterAdapter.submitList(it)
+        }
+
+        viewModel.getStatus().observe(viewLifecycleOwner) {
+            updateProgress(it)
         }
 
         viewModel.getIsRunning().observe(viewLifecycleOwner) {
@@ -139,6 +143,21 @@ class CounterFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun updateProgress(status: ApiStatus) {
+        when (status) {
+            ApiStatus.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            ApiStatus.SUCCESS -> {
+                binding.progressBar.visibility = View.GONE
+            }
+
+            ApiStatus.FAILED -> {
+                binding.progressBar.visibility = View.GONE
+                binding.networkError.visibility = View.VISIBLE
+            }
+        }
+    }
+
 
     //  Count how many column that possible for device
     private fun calculateNoOfColumns(context: Context, columnWidthDp: Float = 180f): Int {

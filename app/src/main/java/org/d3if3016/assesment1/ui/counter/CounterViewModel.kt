@@ -1,5 +1,6 @@
 package org.d3if3016.assesment1.ui.counter
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,14 +11,32 @@ import org.d3if3016.assesment1.R
 import org.d3if3016.assesment1.data.Vehicle
 import org.d3if3016.assesment1.data.Vehicles
 import org.d3if3016.assesment1.data.VehiclesDao
-import org.d3if3016.assesment1.data.getVehicles
+import org.d3if3016.assesment1.network.ApiStatus
+import org.d3if3016.assesment1.network.VehiclesApi
 
 class CounterViewModel(private val db: VehiclesDao) : ViewModel() {
-    private val vehicles = MutableLiveData(getVehicles())
+    private val vehicles = MutableLiveData<List<Vehicle>>()
+    private val status = MutableLiveData<ApiStatus>()
     private var elapsedTime = 0L
     private var startTime = 0L
     private var isRunning = MutableLiveData(false)
 
+    init {
+        retrieveData()
+    }
+
+    private fun retrieveData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            status.postValue(ApiStatus.LOADING)
+            try {
+                vehicles.postValue(VehiclesApi.service.getVehicles())
+                status.postValue(ApiStatus.SUCCESS)
+            } catch (e: Exception) {
+                Log.e("CounterViewModel", "Failure: ${e.message}")
+                status.postValue(ApiStatus.FAILED)
+            }
+        }
+    }
     fun saveData(chronoTextVal: String): Int? {
         return vehicles.value?.let {
             val finalData = Vehicles(
@@ -42,7 +61,7 @@ class CounterViewModel(private val db: VehiclesDao) : ViewModel() {
     }
 
     fun resetData() {
-        vehicles.value = getVehicles()
+        retrieveData()
         elapsedTime = 0L
         startTime = 0L
         isRunning.value = false
@@ -73,4 +92,6 @@ class CounterViewModel(private val db: VehiclesDao) : ViewModel() {
     fun getElapsedTime() = elapsedTime
     fun getStartTime() = startTime
     fun getIsRunning() = isRunning
+
+    fun getStatus() = status
 }

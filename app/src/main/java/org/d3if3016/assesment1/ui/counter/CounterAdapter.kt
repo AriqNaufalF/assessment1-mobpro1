@@ -5,10 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import org.d3if3016.assesment1.GlideApp
+import org.d3if3016.assesment1.R
 import org.d3if3016.assesment1.data.Vehicle
 import org.d3if3016.assesment1.databinding.ListItemBinding
+import org.d3if3016.assesment1.network.VehiclesApi
 
-class CounterAdapter(private val onClick: (Vehicle) -> Unit) : ListAdapter<Vehicle, CounterAdapter.ViewHolder>(DIFF_CALLBACK) {
+class CounterAdapter(private val onClick: (Vehicle) -> Unit) :
+    ListAdapter<Vehicle, CounterAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK =
@@ -28,8 +32,11 @@ class CounterAdapter(private val onClick: (Vehicle) -> Unit) : ListAdapter<Vehic
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(vehicle: Vehicle) = with(binding) {
             vehicleName.text = vehicle.name
-            vehicleImage.setImageResource(vehicle.imgRes)
             vehicleCounter.text = vehicle.count.toString()
+            GlideApp.with(vehicleImage.context)
+                .load(VehiclesApi.getVehiclesUrl(vehicle.imageId))
+                .error(R.drawable.broken_image)
+                .into(vehicleImage)
             root.setOnClickListener {
                 onClick(vehicle)
             }
