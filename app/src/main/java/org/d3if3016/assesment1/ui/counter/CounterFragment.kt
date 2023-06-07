@@ -1,6 +1,9 @@
 package org.d3if3016.assesment1.ui.counter
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.DisplayMetrics
@@ -13,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +28,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
+import org.d3if3016.assesment1.MainActivity
 import org.d3if3016.assesment1.R
 import org.d3if3016.assesment1.data.SettingDataStore
 import org.d3if3016.assesment1.data.VehiclesDb
@@ -77,6 +83,8 @@ class CounterFragment : Fragment() {
         viewModel.getStatus().observe(viewLifecycleOwner) {
             updateProgress(it)
         }
+
+        viewModel.scheduleNotification(requireActivity().application)
 
         viewModel.getIsRunning().observe(viewLifecycleOwner) {
             if (viewModel.getElapsedTime() != 0L && it) {
@@ -149,8 +157,10 @@ class CounterFragment : Fragment() {
             ApiStatus.LOADING -> binding.progressBar.visibility = View.VISIBLE
             ApiStatus.SUCCESS -> {
                 binding.progressBar.visibility = View.GONE
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    requestNotificationPermission()
+                }
             }
-
             ApiStatus.FAILED -> {
                 binding.progressBar.visibility = View.GONE
                 binding.networkError.visibility = View.VISIBLE
@@ -207,5 +217,20 @@ class CounterFragment : Fragment() {
         chronometer.base = SystemClock.elapsedRealtime()
         chronometer.stop()
         imageButton.setImageResource(R.drawable.play_arrow)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                MainActivity.PERMISSION_REQUEST_CODE
+            )
+        }
     }
 }

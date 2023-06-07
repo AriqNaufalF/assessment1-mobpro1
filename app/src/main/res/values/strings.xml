@@ -31,4 +31,8 @@
     <string name="no">No, cancel</string>
     <string name="undo">Undo</string>
     <string name="connection_error">Internet connection error</string>
+    <string name="channel_name">Greetings</string>
+    <string name="channel_desc">Greetings to the application</string>
+    <string name="notif_title">Thank you!</string>
+    <string name="notif_text">Hello, thank you for downloading this app. Hope it can help your research</string>
 </resources>

@@ -1,9 +1,13 @@
 package org.d3if3016.assesment1.ui.counter
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,7 +16,9 @@ import org.d3if3016.assesment1.data.Vehicle
 import org.d3if3016.assesment1.data.Vehicles
 import org.d3if3016.assesment1.data.VehiclesDao
 import org.d3if3016.assesment1.network.ApiStatus
+import org.d3if3016.assesment1.network.NotificationWorker
 import org.d3if3016.assesment1.network.VehiclesApi
+import java.util.concurrent.TimeUnit
 
 class CounterViewModel(private val db: VehiclesDao) : ViewModel() {
     private val vehicles = MutableLiveData<List<Vehicle>>()
@@ -94,4 +100,16 @@ class CounterViewModel(private val db: VehiclesDao) : ViewModel() {
     fun getIsRunning() = isRunning
 
     fun getStatus() = status
+
+    fun scheduleNotification(app: Application) {
+        val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(app).enqueueUniqueWork(
+            NotificationWorker.WORK_NAME,
+            ExistingWorkPolicy.REPLACE,
+            request
+        )
+    }
 }
